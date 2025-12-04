@@ -1,21 +1,18 @@
-FROM node:18-alpine
+FROM node:18
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
-# Install all dependencies including devDependencies for build
+# Install all dependencies
 RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY . .
 
-# Build TypeScript using npx to avoid permission issues
-RUN npx tsc
-
 # Expose port (Render will set PORT env var)
 EXPOSE 3001
 
-# Start the built app
-CMD ["node", "dist/main.js"]
+# Start with ts-node directly (no build step needed)
+CMD ["npx", "ts-node", "src/main.ts"]
