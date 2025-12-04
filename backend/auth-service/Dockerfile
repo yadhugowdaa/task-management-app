@@ -8,11 +8,14 @@ COPY package*.json ./
 # Install all dependencies
 RUN npm install --legacy-peer-deps
 
+# Install ts-node globally
+RUN npm install -g ts-node typescript
+
 # Copy source code
 COPY . .
 
 # Expose port (Render will set PORT env var)
 EXPOSE 3001
 
-# Start with ts-node directly (no build step needed)
-CMD ["npx", "ts-node", "src/main.ts"]
+# Start with globally installed ts-node
+CMD ["ts-node", "src/main.ts"]
