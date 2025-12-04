@@ -1,0 +1,35 @@
+# Render.com Blueprint Configuration for IKYKIK Backend
+# This file defines services to deploy on Render
+
+services:
+  # Auth Service - handles user authentication
+  - type: web
+    name: ikykik-auth-service
+    runtime: docker
+    dockerfilePath: ./auth-service/Dockerfile
+    dockerContext: ./auth-service
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false  # You'll set this in Render dashboard with MongoDB Atlas URI
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+    healthCheckPath: /
+    autoDeploy: false
+
+  # Task Service - handles task management
+  - type: web
+    name: ikykik-task-service
+    runtime: docker
+    dockerfilePath: ./task-service/Dockerfile
+    dockerContext: ./task-service
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+    healthCheckPath: /
+    autoDeploy: false
