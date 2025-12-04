@@ -11,11 +11,8 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
-# Build TypeScript
-RUN npm run build
-
-# Remove devDependencies after build
-RUN npm prune --production
+# Build TypeScript using npx to avoid permission issues
+RUN npx tsc
 
 # Expose port (Render will set PORT env var)
 EXPOSE 3001
